@@ -1,5 +1,5 @@
 import { useSearchParams } from "next/navigation";
-import React, { useState } from "react";
+import React, { useRef, useState } from "react";
 import { Button } from "../ui/button";
 import { Icon } from "@iconify/react/dist/iconify.js";
 import {
@@ -13,13 +13,83 @@ import {
 import { Label } from "../ui/label";
 import { Input } from "../ui/input";
 import { ReloadIcon } from "@radix-ui/react-icons";
+import { useMutation, useQueryClient } from "@tanstack/react-query";
+import { generateEmployees } from "@/services/employees";
+import { useToast } from "@/hooks/use-toast";
 
-export default function GenerateEmployees() {
+export default function GenerateEmployees({
+  periodName,
+}: {
+  periodName: string;
+}) {
+  const query = useQueryClient();
+  const { toast } = useToast();
+
+  const fileUpload = useRef<HTMLInputElement>(null);
+
   const searchParams = useSearchParams();
   const periodsParams = searchParams.get("period");
 
   const [open, setOpen] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
+
+  const mutationCreate = useMutation({ mutationFn: generateEmployees });
+
+  const handleSubmit = () => {
+    setIsLoading(true);
+
+    // @ts-ignore
+    const file = fileUpload.current.files[0];
+
+    if (
+      file["type"] !== "application/vnd.ms-excel" &&
+      file["type"] !==
+        "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"
+    ) {
+      toast({
+        title: "Failed",
+        description: "Please only upload excel file",
+        variant: "destructive",
+      });
+      setIsLoading(false);
+      return;
+    }
+
+    const form = new FormData();
+    form.append("file", file || ""); // Assuming periodsParams is the file
+    form.append("periodId", periodsParams || "");
+    form.append("periodName", periodName);
+
+    mutationCreate.mutate(form, {
+      onSuccess() {
+        setIsLoading(false);
+        setOpen(false);
+        toast({
+          title: "Success",
+          description: "Success generate pdf payslip",
+          variant: "default",
+        });
+        query.invalidateQueries({ queryKey: ["employees"] });
+        query.invalidateQueries({ queryKey: ["periods"] });
+        query.invalidateQueries({ queryKey: ["employee"] });
+      },
+      onError(error) {
+        setIsLoading(false);
+        if (error) {
+          // @ts-ignore
+          const message = error?.response?.data?.message
+            ? // @ts-ignore
+              error?.response?.data?.message
+            : error?.message;
+          toast({
+            title: "Failed",
+            description: message,
+            variant: "destructive",
+          });
+        }
+      },
+    });
+  };
   return (
     <>
       <Dialog open={open} onOpenChange={(e) => setOpen(e)}>
@@ -40,7 +110,7 @@ export default function GenerateEmployees() {
           <form
             onSubmit={(e) => {
               e.preventDefault();
-              //   handleSubmit();
+              handleSubmit();
             }}
           >
             <div className="flex flex-col gap-5">
@@ -55,6 +125,7 @@ export default function GenerateEmployees() {
                     className="col-span-4"
                     required
                     type="file"
+                    ref={fileUpload}
                   />
                 </div>
               </div>

@@ -12,6 +12,7 @@ model User {
   name        String
   email       String
   isSendEmail Boolean
+  fileUrl     String
   createDate  DateTime @default(now())
   updateDate  DateTime @updatedAt
   period      Period?  @relation(fields: [periodId], references: [id]) // Nullable relation to Period

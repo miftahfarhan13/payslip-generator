@@ -50,11 +50,6 @@ export default function ModalAddPeriod({
         onSuccess() {
           setIsLoading(false);
           setOpen(false);
-          // toaster.create({
-          //   title: "Success",
-          //   description: "Create FAQ Success",
-          //   type: "success",
-          // });
           setName("");
           setPeriod("");
           query.invalidateQueries({ queryKey: ["periods"] });
@@ -68,11 +63,6 @@ export default function ModalAddPeriod({
               ? // @ts-ignore
                 error?.response?.data?.message
               : error?.message;
-            // toaster.create({
-            //   title: "Failed",
-            //   description: message,
-            //   type: "error",
-            // });
           }
         },
       }
@@ -87,11 +77,6 @@ export default function ModalAddPeriod({
         onSuccess() {
           setIsLoading(false);
           setOpen(false);
-          // toaster.create({
-          //   title: "Success",
-          //   description: "Create FAQ Success",
-          //   type: "success",
-          // });
           query.invalidateQueries({ queryKey: ["periods"] });
           query.invalidateQueries({ queryKey: ["period"] });
         },
@@ -103,11 +88,6 @@ export default function ModalAddPeriod({
               ? // @ts-ignore
                 error?.response?.data?.message
               : error?.message;
-            // toaster.create({
-            //   title: "Failed",
-            //   description: message,
-            //   type: "error",
-            // });
           }
         },
       }
