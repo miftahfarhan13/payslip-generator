@@ -12,6 +12,13 @@ import {
 } from "../ui/dialog";
 import { Label } from "../ui/label";
 import { Input } from "../ui/input";
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "../ui/select";
 import { ReloadIcon } from "@radix-ui/react-icons";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { generateEmployees } from "@/services/employees";
@@ -26,6 +33,8 @@ export default function GenerateEmployees({
   const { toast } = useToast();
 
   const fileUpload = useRef<HTMLInputElement>(null);
+
+  const [companyType, setCompanyType] = useState("");
 
   const searchParams = useSearchParams();
   const periodsParams = searchParams.get("period");
@@ -58,6 +67,7 @@ export default function GenerateEmployees({
     const form = new FormData();
     form.append("file", file || ""); // Assuming periodsParams is the file
     form.append("periodId", periodsParams || "");
+    form.append("companyType", companyType);
     form.append("periodName", periodName);
 
     mutationCreate.mutate(form, {
@@ -115,6 +125,26 @@ export default function GenerateEmployees({
           >
             <div className="flex flex-col gap-5">
               <div className="grid gap-4 py-4">
+                <div className="grid grid-cols-5 items-center gap-4">
+                  <Label htmlFor="name" className="text-right">
+                    Company
+                  </Label>
+                  <Select
+                    value={companyType}
+                    onValueChange={(value) => setCompanyType(value)}
+                    name="companyType"
+                    required
+                  >
+                    <SelectTrigger className="col-span-4">
+                      <SelectValue placeholder="Select Company" />
+                    </SelectTrigger>
+                    <SelectContent>
+                      <SelectItem value="Dibimbing">Dibimbing</SelectItem>
+                      <SelectItem value="Cakrawala">Cakrawala</SelectItem>
+                      <SelectItem value="Dibilabs">Dibilabs</SelectItem>
+                    </SelectContent>
+                  </Select>
+                </div>
                 <div className="grid grid-cols-5 items-center gap-4">
                   <Label htmlFor="name" className="text-right">
                     Excel File

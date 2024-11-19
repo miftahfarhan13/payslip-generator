@@ -5,9 +5,11 @@ import Period from "@/components/Period";
 import DetailPeriod from "@/components/Period/DetailPeriod";
 import { periodById } from "@/services/period";
 import { useQuery } from "@tanstack/react-query";
+import moment from "moment";
 import dynamic from "next/dynamic";
 import { useSearchParams } from "next/navigation";
-import React, { useEffect, useState } from "react";
+import React from "react";
+import "moment/locale/id"
 
 const ModalAddPeriod = dynamic(
   () => import("../components/Period/ModalAddPeriod"),
@@ -49,7 +51,11 @@ export default function Home() {
                   <div className="flex flex-row justify-between items-center">
                     <p className="text-xl font-bold">Employees</p>
                     <div className="flex flex-row gap-2.5 items-center">
-                      <GenerateEmployees periodName={data?.data?.name} />
+                      <GenerateEmployees
+                        periodName={moment(new Date(data?.data?.date)).format(
+                          "MMMM YYYY"
+                        )}
+                      />
                     </div>
                   </div>
                 </div>

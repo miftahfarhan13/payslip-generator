@@ -6,6 +6,7 @@ import ButtonSendEmail from "./ButtonSendEmail";
 import { useQuery } from "@tanstack/react-query";
 import { employeeById } from "@/services/employees";
 import { Icon } from "@iconify/react/dist/iconify.js";
+import ChipCompanyType from "./ChipCompanyType";
 
 export default function EmployeeDetail({ employeeId }: { employeeId: string }) {
   const { data, isPending, isFetching } = useQuery({
@@ -39,7 +40,8 @@ export default function EmployeeDetail({ employeeId }: { employeeId: string }) {
                         }}
                       />
                     </div>
-                    <p className="text-xs">{employee?.email}</p>
+                    <p className="text-xs mb-2">{employee?.email}</p>
+                    <ChipCompanyType companyType={employee?.companyType} />
                   </div>
                 </div>
                 <p className="text-xs text-[#71717a]">

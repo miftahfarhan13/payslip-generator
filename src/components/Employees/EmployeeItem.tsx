@@ -1,5 +1,6 @@
 import React from "react";
 import moment from "moment";
+import ChipCompanyType from "./ChipCompanyType";
 
 export default function EmployeeItem({
   selectedEmployee,
@@ -26,7 +27,8 @@ export default function EmployeeItem({
               }}
             />
           </div>
-          <p className="text-xs">{employee?.email}</p>
+          <p className="text-xs mb-2">{employee?.email}</p>
+          <ChipCompanyType companyType={employee?.companyType} />
         </div>
         <p className="text-xs text-[#71717a]">
           {moment(new Date(employee?.createDate)).fromNow()}
