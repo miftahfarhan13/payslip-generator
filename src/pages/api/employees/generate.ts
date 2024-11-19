@@ -32,375 +32,512 @@ function getEmailTemplate({
   companyType: string;
 }) {
   const formatter = new Intl.NumberFormat("id");
-  const baseStyle = `<style>
-                @media print{@page {size: landscape}}
-                body {
-                  font-family: Arial, sans-serif;
-                  font-size: 12px;
-                  margin: 0;
-                  padding: 0;
-                }
-                .container {
-                  width: 100%;
-                  max-width: 1000px;
-                  margin: 0 auto;
-                  padding: 20px;
-                }
-                h1 {
-                  text-align: center;
-                  font-size: 24px;
-                  margin-bottom: 10px;
-                }
-                table {
-                  width: 100%;
-                  border-collapse: collapse;
-                }
-                td,
-                th {
-                  padding-top: 2px;
-                  padding-bottom: 2px;
-                  padding-left: 8px;
-                  padding-right: 8px;
-                  text-align: left;
-                  width: 25%;
-                }
-                .section-title {
-                  font-weight: bold;
-                  text-align: left;
-                  margin: 10px;
-                }
-                .totals {
-                  font-weight: bold;
-                }
-                .benefit-note {
-                  font-size: 10px;
-                  color: #333;
-                }
-                .confidential {
-                  font-size: 10px;
-                  color: #333;
-                  margin-top: 20px;
-                }
-                .no-border {
-                  border: none;
-                }
-                .right-align {
-                  text-align: right;
-                }
-                .highlight {
-                  background-color: #f0f0f0;
-                }
-                .grid-container {
-                  display: grid;
-                  grid-template-columns: repeat(2, minmax(0, 1fr));
-                  align-items: start;
-                }
-                .flex-column {
-                  display: flex;
-                  flex-direction: column;
-                  gap: 10px;
-                }
-                .relative {
-                  position: relative;
-                }
-                .absolute {
-                  position: absolute;
-                  top: 20px;
-                  right: 20px;
-                  font-weight: 700;
-                  color: red;
-                }
-                .flex-column-body{
-                  display: flex;
-                  flex-direction: column;
-                }
-                .mb-5{
-                  margin-bottom: 20px;
-                }
-              </style>`;
+  const baseStyle = `
+    <style>
+      @media print{@page {size: landscape}}
+      body {
+        font-family: Arial, sans-serif;
+        font-size: 12px;
+        margin: 0;
+        padding: 0;
+      }
+      .container {
+        width: 100%;
+        max-width: 1000px;
+        margin: 0 auto;
+        padding: 20px;
+      }
+      h1 {
+        text-align: center;
+        font-size: 24px;
+        margin-bottom: 10px;
+      }
+      table {
+        width: 100%;
+        border-collapse: collapse;
+      }
+      td,
+      th {
+        padding-top: 2px;
+        padding-bottom: 2px;
+        padding-left: 8px;
+        padding-right: 8px;
+        text-align: left;
+        width: 25%;
+      }
+      .section-title {
+        font-weight: bold;
+        text-align: left;
+        margin: 10px;
+      }
+      .totals {
+        font-weight: bold;
+      }
+      .benefit-note {
+        font-size: 10px;
+        color: #333;
+      }
+      .confidential {
+        font-size: 10px;
+        color: #333;
+        margin-top: 20px;
+      }
+      .no-border {
+        border: none;
+      }
+      .right-align {
+        text-align: right;
+      }
+      .highlight {
+        background-color: #f0f0f0;
+      }
+      .grid-container {
+        display: grid;
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+        align-items: start;
+      }
+      .flex-column {
+        display: flex;
+        flex-direction: column;
+        gap: 10px;
+      }
+      .relative {
+        position: relative;
+      }
+      .absolute {
+        position: absolute;
+        top: 20px;
+        right: 20px;
+        font-weight: 700;
+        color: red;
+      }
+      .flex-column-body{
+        display: flex;
+        flex-direction: column;
+      }
+      .mb-5{
+        margin-bottom: 20px;
+      }
+    </style>`;
+
+  let logoCompany = "";
   if (companyType === "Dibimbing") {
-    return `
-          <html lang="en">
-            <head>
-              ${baseStyle}
-            </head>
-            <body>
-              <div class="container relative">
-                <div class="absolute">*CONFIDENTIAL</div>
-                <table class="no-border mb-5">
-                  <tr>
-                    <td>
-                      <div class="flex-column">
-                        <img src="http://localhost:3000/logo-dibimbing.png" width="200" />
-                        <strong>PT. Dibimbing Digital Indonesia</strong>
-                      </div>
-                    </td>
-                    <td>
-                      <strong style="font-size: 20px; color: #0BB1CB">PAYSLIP</strong>
-                    </td>
-                  </tr>
-                  <tr>
-                    <td>Month: <span class="highlight">${periodName}</span></td>
-                    <td>Role: <span class="highlight">${
-                      row?.job_title
-                    }</span></td>
-                  </tr>
-                  <tr>
-                    <td>ID / Name: <span class="highlight">${
-                      row?.employee_name
-                    }</span></td>
-                    <td>NPWP: <span class="highlight">${row?.tax_id}</span></td>
-                  </tr>
-                  <tr>
-                    <td>Organization: <span class="highlight">${
-                      row?.departement
-                    }</span></td>
+    logoCompany = `
+      <div class="flex-column">
+        <img src="http://localhost:3000/logo-dibimbing.png" width="200" />
+        <strong>PT. Dibimbing Digital Indonesia</strong>
+      </div>
+    `;
+  } else if (companyType === "Dibilabs") {
+    logoCompany = `
+      <div class="flex-column">
+        <img src="http://localhost:3000/logo-dibilabs.png" width="200" />
+        <strong>PT. Dibilabs Agensi Indonesia</strong>
+      </div>
+    `;
+  } else if (companyType === "Cakrawala") {
+    logoCompany = `
+      <div class="flex-column">
+        <img src="http://localhost:3000/logo-cakrawala.png" width="200" />
+        <strong>Yayasan Dibimbing Digital Indonesia</strong>
+      </div>
+    `;
+  }
+
+  return `
+    <html lang="en">
+      <head>
+        ${baseStyle}
+      </head>
+      <body>
+        <div class="container relative">
+          <div class="absolute">*CONFIDENTIAL</div>
+          <table class="no-border mb-5">
+            <tr>
+              <td>
+                ${logoCompany}
+              </td>
+              <td>
+                <strong style="font-size: 20px; color: #0BB1CB">PAYSLIP</strong>
+              </td>
+            </tr>
+            <tr>
+              <td>Month: <span class="highlight">${periodName}</span></td>
+              <td>Role: <span class="highlight">${row?.job_title}</span></td>
+            </tr>
+            <tr>
+              <td>ID / Name: <span class="highlight">${
+                row?.employee_name
+              }</span></td>
+              ${
+                row?.tax_id
+                  ? `<td>NPWP: <span class="highlight">${row?.tax_id}</span></td>`
+                  : ""
+              }
+            </tr>
+            ${
+              row?.departement
+                ? `<tr>
+                    <td>Organization: <span class="highlight">${row?.departement}</span></td>
                     <td>PTKP: <span class="highlight">${row?.ptkp}</span></td>
-                  </tr>
-                </table>
-                
-                <div class="flex-column-body mb-5">
-                  <table>
-                    <tr>
-                      <th>Income</th>
-                      <th></th>
-                      <th>Deduction</th>
-                      <th></th>
-                    </tr>
-                  </table>
-                  <div class="grid-container">
-                    <table>
-                      <tr>
+                  </tr>`
+                : ""
+            }
+          </table>
+          
+          <div class="flex-column-body mb-5">
+            <table>
+              <tr>
+                <th>Income</th>
+                <th></th>
+                <th>Deduction</th>
+                <th></th>
+              </tr>
+            </table>
+            <div class="grid-container">
+              <table>
+                ${
+                  row?.gaji_pokok
+                    ? `<tr>
                         <td>Basic Salary</td>
                         <td class="right-align">Rp ${formatter.format(
                           row?.gaji_pokok
                         )}</td>
-                      </tr>
-                      <tr>
+                      </tr>`
+                    : ""
+                }
+                ${
+                  row?.tunjangan_tetap
+                    ? `<tr>
                         <td>Fix Allowance</td>
                         <td class="right-align">Rp ${formatter.format(
                           row?.tunjangan_tetap
                         )}</td>
-                      </tr>
-                      ${
-                        row?.tunjangan_jabatan
-                          ? `<tr>
-                              <td>Positional Allowance</td>
-                              <td class="right-align">Rp ${formatter.format(
-                                row?.tunjangan_jabatan
-                              )}</td>
-                            </tr>`
-                          : ""
-                      }
-                      ${
-                        row?.tunjangan_internet
-                          ? `<tr>
-                              <td>Internet Allowance</td>
-                              <td class="right-align">Rp ${formatter.format(
-                                row?.tunjangan_internet
-                              )}</td>
-                            </tr>`
-                          : ""
-                      }
-                      ${
-                        row?.tunjangan_fasilitas
-                          ? `<tr>
-                              <td>Facility Allowance</td>
-                              <td class="right-align">Rp ${formatter.format(
-                                row?.tunjangan_fasilitas
-                              )}</td>
-                            </tr>`
-                          : ""
-                      } 
-                      ${
-                        row?.tunjangan_hybrid
-                          ? `<tr>
-                              <td>Hybrid Allowance</td>
-                              <td class="right-align">Rp ${formatter.format(
-                                row?.tunjangan_hybrid
-                              )}</td>
-                            </tr>`
-                          : ""
-                      }
-                      ${
-                        row?.tunjangan_wellbeing
-                          ? `<tr>
-                              <td>Wellbeing Allowance</td>
-                              <td class="right-align">Rp ${formatter.format(
-                                row?.tunjangan_wellbeing
-                              )}</td>
-                            </tr>`
-                          : ""
-                      }
-                      ${
-                        row?.tunjangan_mentor
-                          ? `<tr>
-                              <td>Mentor Allowance</td>
-                              <td class="right-align">Rp ${formatter.format(
-                                row?.tunjangan_mentor
-                              )}</td>
-                            </tr>`
-                          : ""
-                      }
-                      ${
-                        row?.tunjangan_lainnya
-                          ? `<tr>
-                              <td>Other Allowance</td>
-                              <td class="right-align">Rp ${formatter.format(
-                                row?.tunjangan_lainnya
-                              )}</td>
-                            </tr>`
-                          : ""
-                      }
-                      ${
-                        row?.bonus
-                          ? `<tr>
-                              <td>Bonus</td>
-                              <td class="right-align">Rp ${formatter.format(
-                                row?.bonus
-                              )}</td>
-                            </tr>`
-                          : ""
-                      }
-                      ${
-                        row?.overtime
-                          ? `<tr>
-                              <td>Overtime</td>
-                              <td class="right-align">Rp ${formatter.format(
-                                row?.overtime
-                              )}</td>
-                            </tr>`
-                          : ""
-                      }
-                      ${
-                        row?.bpjs_jkk_perusahaan
-                          ? `<tr>
-                              <td style="width: 30%;">BPJS Jaminan Kecelakaan Kerja</td>
-                              <td class="right-align">Rp ${formatter.format(
-                                row?.bpjs_jkk_perusahaan
-                              )}</td>
-                            </tr>`
-                          : ""
-                      }
-                      ${
-                        row?.bpjs_jkm_perusahaan
-                          ? `<tr>
-                              <td>BPJS Jaminan Kematian</td>
-                              <td class="right-align">Rp ${formatter.format(
-                                row?.bpjs_jkm_perusahaan
-                              )}</td>
-                            </tr>`
-                          : ""
-                      }
-                    </table>
+                      </tr>`
+                    : ""
+                }
+                ${
+                  row?.tunjangan_jabatan
+                    ? `<tr>
+                        <td>Positional Allowance</td>
+                        <td class="right-align">Rp ${formatter.format(
+                          row?.tunjangan_jabatan
+                        )}</td>
+                      </tr>`
+                    : ""
+                }
+                ${
+                  row?.tunjangan_internet
+                    ? `<tr>
+                        <td>Internet Allowance</td>
+                        <td class="right-align">Rp ${formatter.format(
+                          row?.tunjangan_internet
+                        )}</td>
+                      </tr>`
+                    : ""
+                }
+                ${
+                  row?.tunjangan_fasilitas
+                    ? `<tr>
+                        <td>Facility Allowance</td>
+                        <td class="right-align">Rp ${formatter.format(
+                          row?.tunjangan_fasilitas
+                        )}</td>
+                      </tr>`
+                    : ""
+                } 
+                ${
+                  row?.tunjangan_hybrid
+                    ? `<tr>
+                        <td>Hybrid Allowance</td>
+                        <td class="right-align">Rp ${formatter.format(
+                          row?.tunjangan_hybrid
+                        )}</td>
+                      </tr>`
+                    : ""
+                }
+                ${
+                  row?.tunjangan_wellbeing
+                    ? `<tr>
+                        <td>Wellbeing Allowance</td>
+                        <td class="right-align">Rp ${formatter.format(
+                          row?.tunjangan_wellbeing
+                        )}</td>
+                      </tr>`
+                    : ""
+                }
+                ${
+                  row?.tunjangan_mentor
+                    ? `<tr>
+                        <td>Mentor Allowance</td>
+                        <td class="right-align">Rp ${formatter.format(
+                          row?.tunjangan_mentor
+                        )}</td>
+                      </tr>`
+                    : ""
+                }
+                
+                ${
+                  row?.tunjangan_jabatan_lppm
+                    ? `<tr>
+                        <td>LPPM Positional Allowance</td>
+                        <td class="right-align">Rp ${formatter.format(
+                          row?.tunjangan_jabatan_lppm
+                        )}</td>
+                      </tr>`
+                    : ""
+                }
+                ${
+                  row?.tunjangan_jabatan_lpm
+                    ? `<tr>
+                        <td>LPM Positional Allowance</td>
+                        <td class="right-align">Rp ${formatter.format(
+                          row?.tunjangan_jabatan_lpm
+                        )}</td>
+                      </tr>`
+                    : ""
+                }
+                ${
+                  row?.tunjangan_kepala_program_studi
+                    ? `<tr>
+                        <td>Head Study Program Allowance</td>
+                        <td class="right-align">Rp ${formatter.format(
+                          row?.tunjangan_kepala_program_studi
+                        )}</td>
+                      </tr>`
+                    : ""
+                }
+                ${
+                  row?.tunjangan_layanan
+                    ? `<tr>
+                        <td>Service Allowance</td>
+                        <td class="right-align">Rp ${formatter.format(
+                          row?.tunjangan_layanan
+                        )}</td>
+                      </tr>`
+                    : ""
+                }
+                ${
+                  row?.tunjangan_akomodasi
+                    ? `<tr>
+                        <td>Accomodation Allowance</td>
+                        <td class="right-align">Rp ${formatter.format(
+                          row?.tunjangan_akomodasi
+                        )}</td>
+                      </tr>`
+                    : ""
+                }
+                ${
+                  row?.tunjangan_over_sks
+                    ? `<tr>
+                        <td>Over SKS Allowance</td>
+                        <td class="right-align">Rp ${formatter.format(
+                          row?.tunjangan_over_sks
+                        )}</td>
+                      </tr>`
+                    : ""
+                }
+                ${
+                  row?.tunjangan_acara
+                    ? `<tr>
+                        <td>Event Allowance</td>
+                        <td class="right-align">Rp ${formatter.format(
+                          row?.tunjangan_acara
+                        )}</td>
+                      </tr>`
+                    : ""
+                }
+                ${
+                  row?.tunjangan_video_learning
+                    ? `<tr>
+                        <td>Video Learning Allowance</td>
+                        <td class="right-align">Rp ${formatter.format(
+                          row?.tunjangan_video_learning
+                        )}</td>
+                      </tr>`
+                    : ""
+                }
 
-                    <table>
-                      <tr>
+                ${
+                  row?.tunjangan_lainnya
+                    ? `<tr>
+                        <td>Other Allowance</td>
+                        <td class="right-align">Rp ${formatter.format(
+                          row?.tunjangan_lainnya
+                        )}</td>
+                      </tr>`
+                    : ""
+                }
+                ${
+                  row?.bonus
+                    ? `<tr>
+                        <td>Bonus</td>
+                        <td class="right-align">Rp ${formatter.format(
+                          row?.bonus
+                        )}</td>
+                      </tr>`
+                    : ""
+                }
+                ${
+                  row?.overtime
+                    ? `<tr>
+                        <td>Overtime</td>
+                        <td class="right-align">Rp ${formatter.format(
+                          row?.overtime
+                        )}</td>
+                      </tr>`
+                    : ""
+                }
+                ${
+                  row?.bpjs_jkk_perusahaan
+                    ? `<tr>
+                        <td style="width: 30%;">BPJS Jaminan Kecelakaan Kerja</td>
+                        <td class="right-align">Rp ${formatter.format(
+                          row?.bpjs_jkk_perusahaan
+                        )}</td>
+                      </tr>`
+                    : ""
+                }
+                ${
+                  row?.bpjs_jkm_perusahaan
+                    ? `<tr>
+                        <td>BPJS Jaminan Kematian</td>
+                        <td class="right-align">Rp ${formatter.format(
+                          row?.bpjs_jkm_perusahaan
+                        )}</td>
+                      </tr>`
+                    : ""
+                }
+              </table>
+
+              <table>
+                ${
+                  row?.pph21
+                    ? `<tr>
                         <td>Pph21</td>
                         <td class="right-align">Rp ${formatter.format(
                           row?.pph21
                         )}</td>
-                      </tr>
-                      <tr>
+                      </tr>`
+                    : ""
+                }
+                ${
+                  row?.bpjs_kesehatan_karyawan
+                    ? `<tr>
                         <td>BPJS Kesehatan</td>
                         <td class="right-align">Rp ${formatter.format(
                           row?.bpjs_kesehatan_karyawan
                         )}</td>
-                      </tr>
-                      <tr>
-                        ${
+                      </tr>`
+                    : ""
+                }
+                ${
+                  row?.bpjs_jp_karyawan
+                    ? `<tr>
+                        <td>BPJS Jaminan Pensiun</td>
+                        <td class="right-align">Rp ${formatter.format(
                           row?.bpjs_jp_karyawan
-                            ? `<td>BPJS Jaminan Pensiun</td>
-                                <td class="right-align">Rp ${formatter.format(
-                                  row?.bpjs_jp_karyawan
-                                )}</td>`
-                            : ""
-                        }
-                      </tr>
-                      <tr>
-                        ${
-                          row?.bpjs_jht_karyawan
-                            ? `<td>BPJS Jaminan Hari Tua</td>
+                        )}</td>
+                      </tr>`
+                    : ""
+                }
+                ${
+                  row?.bpjs_jht_karyawan
+                    ? `<tr>
+                        <td>BPJS Jaminan Hari Tua</td>
                         <td class="right-align">Rp ${formatter.format(
                           row?.bpjs_jht_karyawan
-                        )}</td>`
-                            : ""
-                        } 
-                      </tr>
-                      <tr>
-                        ${
-                          row?.bpjs_jkk_perusahaan
-                            ? `<td style="width: 30%;">BPJS Jaminan Kecelakaan Kerja</td>
+                        )}</td>
+                      </tr>`
+                    : ""
+                }
+                ${
+                  row?.bpjs_jkk_perusahaan
+                    ? `<tr>
+                        <td style="width: 30%;">BPJS Jaminan Kecelakaan Kerja</td>
                         <td class="right-align">Rp ${formatter.format(
                           row?.bpjs_jkk_perusahaan
-                        )}</td>`
-                            : ""
-                        }
-                      </tr>
-                      <tr>
-                        ${
-                          row?.bpjs_jkm_perusahaan
-                            ? `<td>BPJS Jaminan Kematian</td>
+                        )}</td>
+                      </tr>`
+                    : ""
+                }
+                ${
+                  row?.bpjs_jkm_perusahaan
+                    ? `<tr>
+                        <td>BPJS Jaminan Kematian</td>
                         <td class="right-align">Rp ${formatter.format(
                           row?.bpjs_jkm_perusahaan
-                        )}</td>`
-                            : ""
-                        }
-                      </tr>
-                    </table>
-                  </div>
-                  <table style="margin-top: 20px;">
-                    <tr class="totals">
-                      <td>Total Income</td>
-                      <td class="right-align">Rp ${formatter.format(
-                        row?.total_income
-                      )}</td>
-                      <td>Total Deduction</td>
-                      <td class="right-align">Rp ${formatter.format(
-                        row?.total_deduction
-                      )}</td>
-                    </tr>
-                    <tr class="totals">
-                      <td></td>
-                      <td></td>
-                      <td>Take Home Pay</td>
-                      <td class="right-align">Rp ${formatter.format(
-                        row?.thp
-                      )}</td>
-                    </tr>
-                  </table>
-                </div>
-                <table class="mb-5">
+                        )}</td>
+                      </tr>`
+                    : ""
+                }
+              </table>
+            </div>
+            <table style="margin-top: 20px;">
+              <tr class="totals">
+                <td>Total Income</td>
+                <td class="right-align">Rp ${formatter.format(
+                  row?.total_income
+                )}</td>
+                <td>Total Deduction</td>
+                <td class="right-align">Rp ${formatter.format(
+                  row?.total_deduction
+                )}</td>
+              </tr>
+              <tr class="totals">
+                <td></td>
+                <td></td>
+                <td>Take Home Pay</td>
+                <td class="right-align">Rp ${formatter.format(row?.thp)}</td>
+              </tr>
+            </table>
+          </div>
+          ${
+            row?.total_benefit
+              ? `<table class="mb-5">
                   <tr>
                     <th>Benefit</th>
                     <th></th>
                     <th></th>
                     <th></th>
                   </tr>
-                  <tr>
-                    <td>BPJS Kesehatan</td>
-                    <td class="right-align">Rp ${formatter.format(
-                      row?.bpjs_kesehatan_perusahaan
-                    )}</td>
-                    <td></td>
-                    <td></td>
-                  </tr>
-                  <tr>
-                    <td>BPJS Jaminan Hari Tua</td>
-                    <td class="right-align">Rp ${formatter.format(
-                      row?.bpjs_jht_perusahaan
-                    )}</td>
-                    <td></td>
-                    <td></td>
-                  </tr>
-                  <tr>
-                    <td>BPJS Jaminan Pensiun</td>
-                    <td class="right-align">Rp ${formatter.format(
-                      row?.bpjs_jp_perusahaan
-                    )}</td>
-                    <td></td>
-                    <td></td>
-                  </tr>
+                  ${
+                    row?.bpjs_kesehatan_perusahaan
+                      ? `<tr>
+                          <td>BPJS Kesehatan</td>
+                          <td class="right-align">Rp ${formatter.format(
+                            row?.bpjs_kesehatan_perusahaan
+                          )}</td>
+                          <td></td>
+                          <td></td>
+                        </tr>`
+                      : ""
+                  }
+                  ${
+                    row?.bpjs_jht_perusahaan
+                      ? `<tr>
+                          <td>BPJS Jaminan Hari Tua</td>
+                          <td class="right-align">Rp ${formatter.format(
+                            row?.bpjs_jht_perusahaan
+                          )}</td>
+                          <td></td>
+                          <td></td>
+                        </tr>`
+                      : ""
+                  }
+                  ${
+                    row?.bpjs_jp_perusahaan
+                      ? `<tr>
+                          <td>BPJS Jaminan Pensiun</td>
+                          <td class="right-align">Rp ${formatter.format(
+                            row?.bpjs_jp_perusahaan
+                          )}</td>
+                          <td></td>
+                          <td></td>
+                        </tr>`
+                      : ""
+                  }
+                  
                   <tr class="totals">
                     <td>Total Benefit</td>
                     <td class="right-align">Rp ${formatter.format(
@@ -409,340 +546,30 @@ function getEmailTemplate({
                     <td></td>
                     <td></td>
                   </tr>
-                </table>
+                </table>`
+              : ""
+          }
+          
 
-                <p class="benefit-note">
-                  *These are the benefits you'll get from the company, but not included in
-                  your take-home pay (THP).
-                </p>
+          <p class="benefit-note">
+            *These are the benefits you'll get from the company, but not included in
+            your take-home pay (THP).
+          </p>
 
-                <p class="confidential">
-                  PLEASE NOTE THAT THE CONTENTS OF THIS STATEMENT SHOULD BE TREATED WITH
-                  ABSOLUTE CONFIDENTIALITY EXCEPT TO THE EXTENT YOU ARE REQUIRED TO MAKE
-                  DISCLOSURE FOR ANY TAX, LEGAL, OR REGULATORY PURPOSES. ANY BREACH OF
-                  THIS CONFIDENTIALITY OBLIGATION WILL BE DEALT WITH SERIOUSLY, WHICH MAY
-                  INVOLVE DISCIPLINARY ACTION BEING TAKEN.
-                </p>
-              </div>
-            </body>
-          </html>
-        `;
-  }
-  if (companyType === "Cakrawala") {
-    return ``;
-  }
-  if (companyType === "Dibilabs") {
-    return `
-          <html lang="en">
-            <head>
-              ${baseStyle}
-            </head>
-            <body>
-              <div class="container relative">
-                <div class="absolute">*CONFIDENTIAL</div>
-                <table class="no-border mb-5">
-                  <tr>
-                    <td>
-                      <div class="flex-column">
-                        <img src="http://localhost:3000/logo-dibilabs.png" width="200" />
-                        <strong>PT. Dibilabs Agensi Indonesia</strong>
-                      </div>
-                    </td>
-                    <td>
-                      <strong style="font-size: 20px; color: #0BB1CB">PAYSLIP</strong>
-                    </td>
-                  </tr>
-                  <tr>
-                    <td>Month: <span class="highlight">${periodName}</span></td>
-                    <td>Role: <span class="highlight">${
-                      row?.job_title
-                    }</span></td>
-                  </tr>
-                  <tr>
-                    <td>ID / Name: <span class="highlight">${
-                      row?.employee_name
-                    }</span></td>
-                    <td>NPWP: <span class="highlight">${row?.tax_id}</span></td>
-                  </tr>
-                  <tr>
-                    <td>Organization: <span class="highlight">${
-                      row?.departement
-                    }</span></td>
-                    <td>PTKP: <span class="highlight">${row?.ptkp}</span></td>
-                  </tr>
-                </table>
-                
-                <div class="flex-column-body mb-5">
-                  <table>
-                    <tr>
-                      <th>Income</th>
-                      <th></th>
-                      <th>Deduction</th>
-                      <th></th>
-                    </tr>
-                  </table>
-                  <div class="grid-container">
-                    <table>
-                      <tr>
-                        <td>Basic Salary</td>
-                        <td class="right-align">Rp ${formatter.format(
-                          row?.gaji_pokok
-                        )}</td>
-                      </tr>
-                      <tr>
-                        <td>Fix Allowance</td>
-                        <td class="right-align">Rp ${formatter.format(
-                          row?.tunjangan_tetap
-                        )}</td>
-                      </tr>
-                      ${
-                        row?.tunjangan_jabatan
-                          ? `<tr>
-                              <td>Positional Allowance</td>
-                              <td class="right-align">Rp ${formatter.format(
-                                row?.tunjangan_jabatan
-                              )}</td>
-                            </tr>`
-                          : ""
-                      }
-                      ${
-                        row?.tunjangan_internet
-                          ? `<tr>
-                              <td>Internet Allowance</td>
-                              <td class="right-align">Rp ${formatter.format(
-                                row?.tunjangan_internet
-                              )}</td>
-                            </tr>`
-                          : ""
-                      }
-                      ${
-                        row?.tunjangan_fasilitas
-                          ? `<tr>
-                              <td>Facility Allowance</td>
-                              <td class="right-align">Rp ${formatter.format(
-                                row?.tunjangan_fasilitas
-                              )}</td>
-                            </tr>`
-                          : ""
-                      } 
-                      ${
-                        row?.tunjangan_hybrid
-                          ? `<tr>
-                              <td>Hybrid Allowance</td>
-                              <td class="right-align">Rp ${formatter.format(
-                                row?.tunjangan_hybrid
-                              )}</td>
-                            </tr>`
-                          : ""
-                      }
-                      ${
-                        row?.tunjangan_wellbeing
-                          ? `<tr>
-                              <td>Wellbeing Allowance</td>
-                              <td class="right-align">Rp ${formatter.format(
-                                row?.tunjangan_wellbeing
-                              )}</td>
-                            </tr>`
-                          : ""
-                      }
-                      ${
-                        row?.tunjangan_mentor
-                          ? `<tr>
-                              <td>Mentor Allowance</td>
-                              <td class="right-align">Rp ${formatter.format(
-                                row?.tunjangan_mentor
-                              )}</td>
-                            </tr>`
-                          : ""
-                      }
-                      ${
-                        row?.tunjangan_lainnya
-                          ? `<tr>
-                              <td>Other Allowance</td>
-                              <td class="right-align">Rp ${formatter.format(
-                                row?.tunjangan_lainnya
-                              )}</td>
-                            </tr>`
-                          : ""
-                      }
-                      ${
-                        row?.bonus
-                          ? `<tr>
-                              <td>Bonus</td>
-                              <td class="right-align">Rp ${formatter.format(
-                                row?.bonus
-                              )}</td>
-                            </tr>`
-                          : ""
-                      }
-                      ${
-                        row?.overtime
-                          ? `<tr>
-                              <td>Overtime</td>
-                              <td class="right-align">Rp ${formatter.format(
-                                row?.overtime
-                              )}</td>
-                            </tr>`
-                          : ""
-                      }
-                      ${
-                        row?.bpjs_jkk_perusahaan
-                          ? `<tr>
-                              <td style="width: 30%;">BPJS Jaminan Kecelakaan Kerja</td>
-                              <td class="right-align">Rp ${formatter.format(
-                                row?.bpjs_jkk_perusahaan
-                              )}</td>
-                            </tr>`
-                          : ""
-                      }
-                      ${
-                        row?.bpjs_jkm_perusahaan
-                          ? `<tr>
-                              <td>BPJS Jaminan Kematian</td>
-                              <td class="right-align">Rp ${formatter.format(
-                                row?.bpjs_jkm_perusahaan
-                              )}</td>
-                            </tr>`
-                          : ""
-                      }
-                    </table>
-
-                    <table>
-                      <tr>
-                        <td>Pph21</td>
-                        <td class="right-align">Rp ${formatter.format(
-                          row?.pph21
-                        )}</td>
-                      </tr>
-                      <tr>
-                        <td>BPJS Kesehatan</td>
-                        <td class="right-align">Rp ${formatter.format(
-                          row?.bpjs_kesehatan_karyawan
-                        )}</td>
-                      </tr>
-                      <tr>
-                        ${
-                          row?.bpjs_jp_karyawan
-                            ? `<td>BPJS Jaminan Pensiun</td>
-                                <td class="right-align">Rp ${formatter.format(
-                                  row?.bpjs_jp_karyawan
-                                )}</td>`
-                            : ""
-                        }
-                      </tr>
-                      <tr>
-                        ${
-                          row?.bpjs_jht_karyawan
-                            ? `<td>BPJS Jaminan Hari Tua</td>
-                        <td class="right-align">Rp ${formatter.format(
-                          row?.bpjs_jht_karyawan
-                        )}</td>`
-                            : ""
-                        } 
-                      </tr>
-                      <tr>
-                        ${
-                          row?.bpjs_jkk_perusahaan
-                            ? `<td style="width: 30%;">BPJS Jaminan Kecelakaan Kerja</td>
-                        <td class="right-align">Rp ${formatter.format(
-                          row?.bpjs_jkk_perusahaan
-                        )}</td>`
-                            : ""
-                        }
-                      </tr>
-                      <tr>
-                        ${
-                          row?.bpjs_jkm_perusahaan
-                            ? `<td>BPJS Jaminan Kematian</td>
-                        <td class="right-align">Rp ${formatter.format(
-                          row?.bpjs_jkm_perusahaan
-                        )}</td>`
-                            : ""
-                        }
-                      </tr>
-                    </table>
-                  </div>
-                  <table style="margin-top: 20px;">
-                    <tr class="totals">
-                      <td>Total Income</td>
-                      <td class="right-align">Rp ${formatter.format(
-                        row?.total_income
-                      )}</td>
-                      <td>Total Deduction</td>
-                      <td class="right-align">Rp ${formatter.format(
-                        row?.total_deduction
-                      )}</td>
-                    </tr>
-                    <tr class="totals">
-                      <td></td>
-                      <td></td>
-                      <td>Take Home Pay</td>
-                      <td class="right-align">Rp ${formatter.format(
-                        row?.thp
-                      )}</td>
-                    </tr>
-                  </table>
-                </div>
-                <table class="mb-5">
-                  <tr>
-                    <th>Benefit</th>
-                    <th></th>
-                    <th></th>
-                    <th></th>
-                  </tr>
-                  <tr>
-                    <td>BPJS Kesehatan</td>
-                    <td class="right-align">Rp ${formatter.format(
-                      row?.bpjs_kesehatan_perusahaan
-                    )}</td>
-                    <td></td>
-                    <td></td>
-                  </tr>
-                  <tr>
-                    <td>BPJS Jaminan Hari Tua</td>
-                    <td class="right-align">Rp ${formatter.format(
-                      row?.bpjs_jht_perusahaan
-                    )}</td>
-                    <td></td>
-                    <td></td>
-                  </tr>
-                  <tr>
-                    <td>BPJS Jaminan Pensiun</td>
-                    <td class="right-align">Rp ${formatter.format(
-                      row?.bpjs_jp_perusahaan
-                    )}</td>
-                    <td></td>
-                    <td></td>
-                  </tr>
-                  <tr class="totals">
-                    <td>Total Benefit</td>
-                    <td class="right-align">Rp ${formatter.format(
-                      row?.total_benefit
-                    )}</td>
-                    <td></td>
-                    <td></td>
-                  </tr>
-                </table>
-
-                <p class="benefit-note">
-                  *These are the benefits you'll get from the company, but not included in
-                  your take-home pay (THP).
-                </p>
-
-                <p class="confidential">
-                  PLEASE NOTE THAT THE CONTENTS OF THIS STATEMENT SHOULD BE TREATED WITH
-                  ABSOLUTE CONFIDENTIALITY EXCEPT TO THE EXTENT YOU ARE REQUIRED TO MAKE
-                  DISCLOSURE FOR ANY TAX, LEGAL, OR REGULATORY PURPOSES. ANY BREACH OF
-                  THIS CONFIDENTIALITY OBLIGATION WILL BE DEALT WITH SERIOUSLY, WHICH MAY
-                  INVOLVE DISCIPLINARY ACTION BEING TAKEN.
-                </p>
-              </div>
-            </body>
-          </html>
-        `;
-  }
+          <p class="confidential">
+            PLEASE NOTE THAT THE CONTENTS OF THIS STATEMENT SHOULD BE TREATED WITH
+            ABSOLUTE CONFIDENTIALITY EXCEPT TO THE EXTENT YOU ARE REQUIRED TO MAKE
+            DISCLOSURE FOR ANY TAX, LEGAL, OR REGULATORY PURPOSES. ANY BREACH OF
+            THIS CONFIDENTIALITY OBLIGATION WILL BE DEALT WITH SERIOUSLY, WHICH MAY
+            INVOLVE DISCIPLINARY ACTION BEING TAKEN.
+          </p>
+        </div>
+      </body>
+    </html>
+  `;
 }
 
+// The API route handler in TypeScript
 // The API route handler in TypeScript
 export default async function handler(
   req: NextApiRequest,
@@ -777,12 +604,21 @@ export default async function handler(
       // Parse the Excel file
       const workbook = XLSX.read(fileBuffer, { type: "buffer" });
       const sheetName = workbook.SheetNames[0];
-      const sheetData = XLSX.utils.sheet_to_json(workbook.Sheets[sheetName]);
+      const rawSheetData = XLSX.utils.sheet_to_json(workbook.Sheets[sheetName]);
+
+      // Clean the keys by trimming spaces
+      const sheetData = rawSheetData.map((row: any) =>
+        Object.keys(row).reduce((cleanedRow: any, key: string) => {
+          const trimmedKey = key.trim();
+          cleanedRow[trimmedKey] = row[key];
+          return cleanedRow;
+        }, {})
+      );
 
       // Step 4: Set up the output directory for the PDFs
       const publicPath = path.join(
         process.cwd(),
-        `public/generated/${periodName ? periodName[0] : ""}`
+        `public/generated/${companyType}/${periodName ? periodName[0] : ""}`
       );
       await fs.mkdir(publicPath, { recursive: true });
 
@@ -823,7 +659,7 @@ export default async function handler(
             email: row?.email,
             companyType: companyType ? companyType[0] : "",
             isSendEmail: false,
-            fileUrl: `generated/${
+            fileUrl: `generated/${companyType}/${
               periodName ? periodName[0] : ""
             }/${generatedFileName}`,
             periodId: periodId ? periodId[0] : "",
