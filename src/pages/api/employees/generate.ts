@@ -357,7 +357,26 @@ function getEmailTemplate({
                       </tr>`
                     : ""
                 }
-
+                ${
+                  row?.tunjangan_sertifikasi
+                    ? `<tr>
+                        <td>Certification Allowance</td>
+                        <td class="right-align">Rp ${formatter.format(
+                          row?.tunjangan_sertifikasi
+                        )}</td>
+                      </tr>`
+                    : ""
+                }
+                ${
+                  row?.tunjangan_maternity
+                    ? `<tr>
+                        <td>Maternity Allowance</td>
+                        <td class="right-align">Rp ${formatter.format(
+                          row?.tunjangan_maternity
+                        )}</td>
+                      </tr>`
+                    : ""
+                }
                 ${
                   row?.tunjangan_lainnya
                     ? `<tr>
@@ -384,6 +403,26 @@ function getEmailTemplate({
                         <td>Overtime</td>
                         <td class="right-align">Rp ${formatter.format(
                           row?.overtime
+                        )}</td>
+                      </tr>`
+                    : ""
+                }
+                ${
+                  row?.thr
+                    ? `<tr>
+                        <td>Tunjangan Hari Raya</td>
+                        <td class="right-align">Rp ${formatter.format(
+                          row?.thr
+                        )}</td>
+                      </tr>`
+                    : ""
+                }
+                ${
+                  row?.bonus_akhir_tahun
+                    ? `<tr>
+                        <td>Bonus Akhir Tahun</td>
+                        <td class="right-align">Rp ${formatter.format(
+                          row?.bonus_akhir_tahun
                         )}</td>
                       </tr>`
                     : ""
