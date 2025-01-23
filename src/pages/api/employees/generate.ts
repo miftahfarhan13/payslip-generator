@@ -428,6 +428,16 @@ function getEmailTemplate({
                     : ""
                 }
                 ${
+                  row?.reward_sales
+                    ? `<tr>
+                        <td>Reward Sales</td>
+                        <td class="right-align">Rp ${formatter.format(
+                          row?.reward_sales
+                        )}</td>
+                      </tr>`
+                    : ""
+                }
+                ${
                   row?.bpjs_jkk_perusahaan
                     ? `<tr>
                         <td style="width: 30%;">BPJS Jaminan Kecelakaan Kerja</td>
