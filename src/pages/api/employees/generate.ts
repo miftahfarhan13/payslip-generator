@@ -275,8 +275,7 @@ function getEmailTemplate({
                         )}</td>
                       </tr>`
                     : ""
-                }
-                
+                } 
                 ${
                   row?.tunjangan_jabatan_lppm
                     ? `<tr>
@@ -438,6 +437,26 @@ function getEmailTemplate({
                     : ""
                 }
                 ${
+                  row?.insurance
+                    ? `<tr>
+                        <td>Insurance</td>
+                        <td class="right-align">Rp ${formatter.format(
+                          row?.insurance
+                        )}</td>
+                      </tr>`
+                    : ""
+                }
+                ${
+                  row?.development_allowance
+                    ? `<tr>
+                        <td>Development Allowance</td>
+                        <td class="right-align">Rp ${formatter.format(
+                          row?.development_allowance
+                        )}</td>
+                      </tr>`
+                    : ""
+                }
+                ${
                   row?.bpjs_jkk_perusahaan
                     ? `<tr>
                         <td style="width: 30%;">BPJS Jaminan Kecelakaan Kerja</td>
@@ -516,6 +535,26 @@ function getEmailTemplate({
                         <td>BPJS Jaminan Kematian</td>
                         <td class="right-align">Rp ${formatter.format(
                           row?.bpjs_jkm_perusahaan
+                        )}</td>
+                      </tr>`
+                    : ""
+                }
+                ${
+                  row?.insurance
+                    ? `<tr>
+                        <td>Insurance</td>
+                        <td class="right-align">Rp ${formatter.format(
+                          row?.insurance
+                        )}</td>
+                      </tr>`
+                    : ""
+                }
+                ${
+                  row?.unpaid_leave
+                    ? `<tr>
+                        <td>Unpaid Leave</td>
+                        <td class="right-align">Rp ${formatter.format(
+                          row?.unpaid_leave
                         )}</td>
                       </tr>`
                     : ""
